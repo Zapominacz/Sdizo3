@@ -16,6 +16,8 @@ public:
 		currWeight = 0;
 		this->maxWeight = maxWeight;
 	}
+
+	void showContents();
 private:
 	unsigned maxWeight;
 	unsigned currValue;

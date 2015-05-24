@@ -1,11 +1,11 @@
 #pragma once
 #include "stdafx.h"
 #include "Bag.h"
-
+/*Klasa odpowiadaj¹ca za algorytmy problemu plecakowego i ich obs³ugi*/
 class KnapsackProblem {
 private:
 	Bag* knapsack;
-	BagItem* itemsList;
+	BagItem* itemsList; //tablica
 public:
 	KnapsackProblem();
 	KnapsackProblem(BagItem*);
@@ -13,7 +13,9 @@ public:
 	void setItemsList(BagItem*);
 	Bag* getKnapsack();
 
-	Bag* doFullCheckAlgoritm();
-	Bag* doGreedyAlgoritm();
-	Bag* doDynamicProgrammingAlgoritm();
+	void doFullCheckAlgoritm();
+	void doGreedyAlgoritm();
+	void doDynamicProgrammingAlgoritm();
+	void loadBagItems();
+	void generateBagItems();
 };

@@ -1,19 +1,23 @@
 #pragma once
 #include "stdafx.h"
+#include "CityGraph.h"
 
-
-class KnapsackProblem {
+class TspProblem {
 private:
-	Gra* knapsack;
-	BagItem* itemsList;
+	CityGraph *cities;
+	CityGraph *result;
 public:
-	KnapsackProblem();
-	KnapsackProblem(BagItem*);
-	~KnapsackProblem();
-	void setItemsList(BagItem*);
-	Bag* getKnapsack();
+	TspProblem();
+	~TspProblem();
+	void setCityGraph(CityGraph*);
+	void setStartCity(int);
+	CityGraph* getCitiesMap();
+	CityGraph* getWay();
 
-	Bag* doFullCheckAlgoritm();
-	Bag* doGreedyAlgoritm();
-	Bag* doDynamicProgrammingAlgoritm();
+	void doFullCheckAlgoritm();
+	void doGreedyAlgoritm();
+	void doDynamicProgrammingAlgoritm();
+
+	void loadCityGraph();
+	void generateCityGraph();
 };

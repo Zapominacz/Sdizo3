@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
-#include "GraphRepresentationInterface.h"
-/** implementacja grafu jako macierz incydencji*/
+
+/** implementacja grafu jako macierz s¹siedztwa*/
 class CityGraph {
 public:
 	unsigned getVertexCount(void) { return vertexCount; }
