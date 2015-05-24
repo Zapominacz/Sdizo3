@@ -19,5 +19,5 @@ public:
 	void doDynamicProgrammingAlgoritm();
 
 	void loadCityGraph();
-	void generateCityGraph();
+	void generateCityGraph(int, int);
 };
