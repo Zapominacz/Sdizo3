@@ -6,12 +6,14 @@ class KnapsackProblem {
 private:
 	Bag* knapsack;
 	BagItem* itemsList; //tablica
+	int itemsListSize;
+	void sortItems();
 public:
 	KnapsackProblem();
 	~KnapsackProblem();
-	void setItemsList(BagItem*);
-	Bag* getKnapsack();
-	void setKnapsack(Bag*);
+	void setItemsList(BagItem* list) { this->itemsList = list; }
+	Bag* getKnapsack() { return knapsack; }
+	void setKnapsack(Bag* knapsack) { this->knapsack = knapsack; }
 	void printKnapsack();
 	void printItems();
 

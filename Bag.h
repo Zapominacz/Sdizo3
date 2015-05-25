@@ -9,6 +9,7 @@ public:
 	unsigned getCurrValue() { return currValue; }
 	unsigned getCurrWeight() { return currWeight; }
 	bool isOverloaded() { return maxWeight < currWeight; };
+	void addItem(BagItem*);
 
 	Bag(unsigned maxWeight) {
 		bagItemList = new BagItemList();
@@ -16,7 +17,7 @@ public:
 		currWeight = 0;
 		this->maxWeight = maxWeight;
 	}
-
+	~Bag();
 	void showContents();
 private:
 	unsigned maxWeight;
