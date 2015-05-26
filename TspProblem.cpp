@@ -1,6 +1,8 @@
 #pragma once
 #include "TspProblem.h"
 #include <random>
+#include "MyList.h"
+#include "EdgeList.h"
 
 TspProblem::TspProblem() {
 	currentBest = NULL;
@@ -33,13 +35,10 @@ void TspProblem::doFullCheckAlgoritm() {
 		citiesOrder[i] = i;
 	}
 	permuteCities(citiesOrder, 0, cities);
-	if (resultMap != NULL) {
-		delete resultMap;
-	}
 	unsigned v1 = currentBest[cities - 1];
 	unsigned v2 = currentBest[0];
+	resultMap->clear(cities);
 	resultMap->insertEdge(v1, v2, citiesMap->searchEdge(v1, v2));
-	resultMap = new CityGraph(cities);
 	for (unsigned i = 1; i < cities; i++) {
 		v1 = currentBest[i - 1];
 		v2 = currentBest[i];
@@ -117,17 +116,51 @@ void TspProblem::loadCityGraph() {
 void TspProblem::generateCityGraph(const unsigned vertexCount,
 		float density, const unsigned weightTo) {
 	using namespace std;
-
 	citiesMap->clear(vertexCount);
 	int edgesToGenerate = (int)((density * vertexCount * (vertexCount - 1)) / 2);
-	if (isDiGraph) {
-		edgesToGenerate *= 2;
-	}
-	int spanningEdge = vertexCount - 1;
+	edgesToGenerate *= 2;
+	edgesToGenerate -= vertexCount;
+
+	MyList *list = new MyList();
 	std::random_device rand_dev;
-	std::uniform_int_distribution<int> weightDistr(weightFrom, weightTo);
+	std::uniform_int_distribution<int> weightDistr(0, weightTo);
 	std::mt19937 generator(rand_dev());
-	for (int i = 0; i < liczba; i++) {
-		itemsList[i] = BagItem(weightDistr(generator), valueDistr(generator));
+	for (int i = 0; i < vertexCount; i++) {
+		list->addAtBeginning(i);
 	}
+	int hamiltonianEdges = vertexCount;
+	std::uniform_int_distribution<int> distr(0, vertexCount - 1);
+	int lastVertex = list->removeAt(distr(generator));
+	int firstVertex = lastVertex;
+	hamiltonianEdges--;
+	while(hamiltonianEdges > 0) {
+		std::uniform_int_distribution<int> distr(0, hamiltonianEdges - 1);
+		int tmp = list->removeAt(distr(generator));
+		citiesMap->insertEdge(lastVertex, tmp, weightDistr(generator));
+		lastVertex = tmp;
+		hamiltonianEdges--;
+	}
+	citiesMap->insertEdge(lastVertex, firstVertex, weightDistr(generator));
+
+	//Generuje wszystkie mo¿liwe krawêdzie które mogê dodaæ
+	delete list;
+	EdgeList *el = new EdgeList();
+	unsigned jdelim = vertexCount;
+	for (unsigned i = 0; i < vertexCount; i++) {
+		for (unsigned j = 0; j < jdelim; j++) {
+			el->add(new Edge(i, j, weightDistr(generator)));
+		}
+	}
+	//losuje z puli krawêdzi i dodaje a¿ do otrzymania po¿¹danej iloœci
+	for (int i = 0; i < edgesToGenerate; i++) {
+		std::uniform_int_distribution<int> edgeDistr(0, el->getSize() - 1);
+		int pos = edgeDistr(generator);
+		Edge* gen = el->pop(pos);
+		bool exist = citiesMap->insertEdge(gen->v1, gen->v2, gen->weight);
+		if (exist) {
+			i--;
+		}
+		delete gen;
+	}
+	delete el;
 }

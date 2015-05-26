@@ -23,7 +23,6 @@ public:
 	bool deleteEdge(unsigned, unsigned);
 	unsigned vertexDegree(unsigned);
 	int searchEdge(unsigned, unsigned);
-	EdgeStack* getAdjFor(unsigned);
 	EdgeList* getSimpleAdjFor(unsigned);
 	bool exist(unsigned, unsigned);
 private:
