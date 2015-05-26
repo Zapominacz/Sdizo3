@@ -1,5 +1,7 @@
 #pragma once
 #include "stdafx.h"
+#include "Edge.h"
+#include "EdgeList.h"
 
 /** implementacja grafu jako macierz s¹siedztwa*/
 class CityGraph {
@@ -8,7 +10,6 @@ public:
 	unsigned getEdgeCount(void) { return edgeCount; }
 
 	void printListGraph(void);
-	void loadFromFile(void);
 	void printMatrixGraph(void);
 	Edge* getAllEdges(void);
 	void generateGraph(const unsigned int, float, const int, const int);

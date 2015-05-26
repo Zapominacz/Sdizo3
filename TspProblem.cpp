@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "TspProblem.h"
 #include <random>
 #include "MyList.h"

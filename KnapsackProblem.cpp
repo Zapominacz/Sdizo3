@@ -1,6 +1,9 @@
 #pragma once
+#include "stdafx.h"
 #include "KnapsackProblem.h"
 #include <random>
+
+
 KnapsackProblem::KnapsackProblem() {
 	knapsack = NULL;
 	itemsList = NULL;
