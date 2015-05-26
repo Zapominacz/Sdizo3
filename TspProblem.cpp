@@ -165,3 +165,40 @@ void TspProblem::generateCityGraph(const unsigned vertexCount,
 	}
 	delete el;
 }
+
+void TspProblem::doGreedyAlgoritm() {
+	MyList *stack = new MyList();
+	int vertexes = citiesMap->getVertexCount();
+	bool* visited = new bool[vertexes];
+	visited[0] = true;
+	stack->addAtBeginning(0);
+	int element, dst = 0, last = 0, i;
+	const int INF = 10000;
+	int min = INF;
+
+	bool minFlag = false;
+	while (stack->getSize() > 0) {
+		element = stack->getValueAt(0);
+		min = INF;
+
+		for(unsigned i = 0; i < vertexes; i++) {
+			int weight = citiesMap->searchEdge(element, i);
+			if (weight > 0 && visited[i] == false && min > weight) {
+				min = weight;
+				dst = i;
+				minFlag = true;
+			}
+		}
+
+		if (minFlag) {
+			visited[dst] = true;
+			stack->addAtBeginning(dst);
+			citiesMap->insertEdge(last, dst, citiesMap->searchEdge(last, dst));
+			last = dst;
+			minFlag = false;
+		} else {
+			stack->removeAtBeginning();
+		}
+	}
+	delete stack;
+}
