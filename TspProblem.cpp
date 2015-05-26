@@ -168,13 +168,13 @@ void TspProblem::generateCityGraph(const unsigned vertexCount,
 
 void TspProblem::doGreedyAlgoritm() {
 	MyList *stack = new MyList();
-	int vertexes = citiesMap->getVertexCount();
+	unsigned vertexes = citiesMap->getVertexCount();
 	bool* visited = new bool[vertexes];
 	visited[0] = true;
 	stack->addAtBeginning(0);
-	int element, dst = 0, last = 0, i;
+	unsigned element, dst = 0, last = 0, i;
 	const int INF = 10000;
-	int min = INF;
+	unsigned min = INF;
 
 	bool minFlag = false;
 	while (stack->getSize() > 0) {
@@ -202,3 +202,31 @@ void TspProblem::doGreedyAlgoritm() {
 	}
 	delete stack;
 }
+
+//void TspProblem::doDynamicProgrammingAlgoritm() {
+//	const unsigned INF = 10000;
+//	unsigned vertexes = citiesMap->getVertexCount();
+//
+//	int improve = 0; //powtarzamy do ulepszenia
+//	unsigned currentBestDistance = INF;
+//	while (improve < 20) {
+//		unsigned tmpBestDistance = currentBestDistance;
+//		for (unsigned i = 0; i < vertexes - 1; i++) {
+//			for (unsigned k = i + 1; k < vertexes; k++) {
+//				TwoOptSwap(i, k);
+//
+//				double new_distance = new_tour.TourDistance();
+//
+//				if (new_distance < best_distance)
+//				{
+//					improve = 0;
+//					tour = new_tour;
+//					best_distance = new_distance;
+//					Notify(tour.TourDistance());
+//				}
+//			}
+//		}
+//
+//		improve++;
+//	}
+//}

@@ -97,6 +97,38 @@ void KnapsackProblem::sortItems() {
 	}
 }
 
+void KnapsackProblem::doDynamicProgrammingAlgoritm() {
+	unsigned** bestTable = new unsigned*[itemsListSize + 1];
+	for (unsigned i = 0; i < itemsListSize; i++) {
+		bestTable[i] = new unsigned[knapsack->getMaxWeight() + 1];
+		for (unsigned j = 0; j <= knapsack->getMaxWeight(); j++) {
+			if (i == 0 || j == 0) {
+				bestTable[i][j] = 0;
+			}
+			else if (itemsList[i - 1].getWeight() <= j) {
+				bestTable[i][j] = max(itemsList[i - 1].getValue() + bestTable[i - 1][j - itemsList[i - 1].getWeight()],
+					bestTable[i - 1][j]);
+			}
+			else {
+				bestTable[i][j] = bestTable[i - 1][j];
+			}
+		}
+	}
+	//czy indeksy sa ok?
+	unsigned w = knapsack->getMaxWeight();
+	for (unsigned i = itemsListSize; i > 0; i--) {
+		if (bestTable[i][w] != bestTable[i - 1][w]) {
+			knapsack->addItem(&itemsList[i - 1]);
+			w -= itemsList[i - 1].getWeight();
+		}
+	}
+
+	for (unsigned i = 0; i < itemsListSize; i++) {
+		delete[] bestTable[i];
+	}
+	delete bestTable;
+}
+
 //³aduje z pliku
 void KnapsackProblem::loadBagItems() {
 	using namespace std;
