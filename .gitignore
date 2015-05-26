@@ -1,2 +1,5 @@
 *.vcxproj
 *.vcxproj.filters
+*.obj
+*.log
+Debug/*

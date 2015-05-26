@@ -7,7 +7,7 @@ public:
 	unsigned getWeight() { return weight;  }
 	unsigned getValue() { return value; }
 	float getValueDensity() { return valueDensity; }
-	void print();
+	
 	BagItem(unsigned weight, unsigned value) {
 		this->value = value;
 		this->weight = weight;
@@ -17,6 +17,10 @@ public:
 		this->value = 0;
 		this->weight = 0;
 		valueDensity = 0;
+	}
+	void showItem() {
+		using namespace std;
+		cout << value << weight << valueDensity << endl;
 	}
 private:
 	float valueDensity;

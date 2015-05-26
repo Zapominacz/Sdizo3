@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 #include "TspProblem.h"
 #include "KnapsackProblem.h"
@@ -8,7 +9,7 @@ void presentation() {
 	int problem = -1;
 
 	char ch;
-	int tmp;
+	int tmp, tmp2;
 	TspProblem *tsp = new TspProblem();
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	do {
@@ -20,9 +21,8 @@ void presentation() {
 				<< "3. Przegl¹d zupe³ny" << endl
 				<< "4. Algorytm zach³anny" << endl
 				<< "5. Algorytm przeszukiwania lokalnego" << endl
-				<< "6. Punkt startowy" << endl
-				<< "7. Pokaz wynik" << endl
-				<< "8. Pokaz miasta" << endl
+				<< "6. Pokaz wynik" << endl
+				<< "7. Pokaz miasta" << endl
 				<< "q. wyjdz" << endl;
 			cin >> ch;
 			switch (ch) {
@@ -32,7 +32,7 @@ void presentation() {
 			case'2':
 				cout << "Ilosc miast: " << endl;
 				cin >> tmp;
-				tsp->generateCityGraph(tmp, 50);
+				tsp->generateCityGraph(tmp, 40, 50);
 				break;
 			case'3':
 				tsp->doFullCheckAlgoritm();
@@ -44,15 +44,10 @@ void presentation() {
 				tsp->doDynamicProgrammingAlgoritm();
 				break;
 			case'6':
-				cout << "Podaj punkt" << endl;
-				cin >> tmp;
-				tsp->setStartCity(tmp);
-				break;
-			case'7':
 				tsp->getCitiesMap()->printMatrixGraph();
 				tsp->getCitiesMap()->printListGraph();
 				break;
-			case'8':
+			case'7':
 				tsp->getWay()->printMatrixGraph();
 				tsp->getWay()->printListGraph();
 				break;
@@ -81,7 +76,9 @@ void presentation() {
 			case'2':
 				cout << "Ilosc rzeczy: " << endl;
 				cin >> tmp;
-				knapsack->generateBagItems(tmp, 50);
+				cout << "Pojemnosc: " << endl;
+				cin >> tmp2;
+				knapsack->generateBagItems(tmp, tmp2, 50, 20);
 				break;
 			case'3':
 				knapsack->doFullCheckAlgoritm();
@@ -135,7 +132,7 @@ void presentation() {
 void testKnapsack() {
 	using namespace std;
 	int items[] = { 10, 20, 30, 40, 50 };
-	float sizes[] = { 10, 20, 30 };
+	int sizes[] = { 10, 20, 30 };
 	int times[] = { 100, 100, 100, 100, 100 };
 	fstream fileF("knapsackFull.txt", ios_base::app);
 	fstream fileG("knapsackGreedy.txt", ios_base::app);
@@ -143,7 +140,7 @@ void testKnapsack() {
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	Bag* result = NULL;
 	for (int i = 0; i < 5; i++) {
-		knapsack->generateBagItems(items[i], 50);
+		knapsack->generateBagItems(items[i], 1, 50, 20);
 		for (int j = 0; j < 3; j++) {
 			Timer *timerF = new Timer();
 			Timer *timerG = new Timer();
@@ -198,7 +195,7 @@ void testTsp() {
 	TspProblem *tsp = new TspProblem();
 	CityGraph *graph = NULL;
 	for (int i = 0; i < 5; i++) {
-		tsp->generateCityGraph(cities[i], 50);
+		tsp->generateCityGraph(cities[i], 40, 50);
 		Timer *timerF = new Timer();
 		Timer *timerG = new Timer();
 		Timer *timerD = new Timer();

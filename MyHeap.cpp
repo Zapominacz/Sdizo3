@@ -120,7 +120,7 @@ void MyHeap::fixHeapUp(void) {
 }
 
 void MyHeap::setKey(int value, int key) {
-	for (int i = 0; i < size; i++) {
+	for (unsigned i = 0; i < size; i++) {
 		if (valueArray[i] == value) {
 			baseArray[i] = key;
 			fixHeapUp();

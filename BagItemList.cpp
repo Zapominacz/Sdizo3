@@ -1,7 +1,8 @@
 #pragma once
 #include "stdafx.h"
-#include "Bag.h"
 #include "BagItemList.h"
+#include "Bag.h"
+
 
 void BagItemList::addItem(BagItem* item) {
 	if (head == NULL) {
@@ -21,12 +22,12 @@ BagItemList::~BagItemList() {
 	}
 }
 
-void BagItemList::print() {
+void BagItemList::printBag() {
 	using namespace std;
 	BagItemNode *tmp = head;
 	cout << "Lista rzeczy:" << endl;
 	while (tmp != NULL) {
-		tmp->value->print();
+		tmp->value->showItem();
 		tmp->next;
 	}
 }

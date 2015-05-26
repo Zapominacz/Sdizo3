@@ -26,7 +26,7 @@ void KnapsackProblem::printKnapsack() {
 
 void KnapsackProblem::printItems() {
 	for (unsigned i = 0; i < itemsListSize; i++) {
-		itemsList[i].print();
+		itemsList[i].showItem();
 	}
 }
 
@@ -36,7 +36,7 @@ void KnapsackProblem::doFullCheckAlgoritm() {
 
 	fullCheck(knapsack->getMaxWeight(), itemsListSize - 1, solution); //rekurencyjne odwo³ania
 	for (unsigned i = 0; i < itemsListSize; i++) {
-		if ((solution.bitMask & (1 << i)) == 1) { //zgodnei z bitami wsadzam rzeczy do plecaka wynikowego
+		if ((solution.bitMask & ((long long) 1 << i)) == 1) { //zgodnei z bitami wsadzam rzeczy do plecaka wynikowego
 			knapsack->addItem(&itemsList[i]);
 		}
 	}
@@ -57,7 +57,7 @@ void KnapsackProblem::fullCheck(unsigned weight, int index, Solution& solution) 
 
 		//wystarczy przypisac jednemu, drugi bêdzie przy zwijaniu rekurencji
 		s2.value += itemsList[index].getValue();
-		s2.bitMask |= (1 << index);
+		s2.bitMask |= ((long long) 1 << index);
 
 		//wieksza wartosc jest rozwiazaniem
 		solution = s1;
@@ -174,7 +174,7 @@ void KnapsackProblem::generateBagItems(unsigned liczba, unsigned pojemnosc, unsi
 	mt19937 generator(rand_dev());
 	uniform_int_distribution<int> weightDistr(0, maxWaga);
 	uniform_int_distribution<int> valueDistr(0, maxWartosc);
-	for (int i = 0; i < liczba; i++) {
+	for (unsigned i = 0; i < liczba; i++) {
 		itemsList[i] = BagItem(weightDistr(generator), valueDistr(generator));
 	}
 }

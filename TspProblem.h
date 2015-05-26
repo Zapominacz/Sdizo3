@@ -7,6 +7,7 @@ private:
 	CityGraph *citiesMap;
 	CityGraph *resultMap;
 	void swapCities(unsigned char&, unsigned char&);
+
 	void permuteCities(unsigned char*, unsigned, unsigned);
 	void checkIsBetterPermutation(unsigned char*, unsigned);
 	//pomocnicze pola dla permutacji

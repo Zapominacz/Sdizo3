@@ -16,7 +16,7 @@ private:
 	BagItemNode* head;
 	unsigned size;
 public:
-	void print();
+	void printBag();
 	void addItem(BagItem*);
 	BagItemList() {
 		head = NULL;

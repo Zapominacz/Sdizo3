@@ -9,7 +9,7 @@ Bag::~Bag() {
 }
 
 void Bag::showContents() {
-	bagItemList->print();
+	bagItemList->printBag();
 }
 
 void Bag::addItem(BagItem* item) {

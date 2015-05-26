@@ -25,7 +25,7 @@ TspProblem::~TspProblem() {
 }
 
 void TspProblem::doFullCheckAlgoritm() {
-	int cities = citiesMap->getVertexCount();
+	unsigned cities = citiesMap->getVertexCount();
 	if (cities > 256) {
 		std::cerr << "Algorytm obsluguje do 256 miast" << std::endl;
 	}
@@ -124,9 +124,9 @@ void TspProblem::generateCityGraph(const unsigned vertexCount,
 
 	MyList *list = new MyList();
 	std::random_device rand_dev;
-	std::uniform_int_distribution<int> weightDistr(0, weightTo);
+	std::uniform_int_distribution<int> weightDistr(1, weightTo);
 	std::mt19937 generator(rand_dev());
-	for (int i = 0; i < vertexCount; i++) {
+	for (unsigned i = 0; i < vertexCount; i++) {
 		list->addAtBeginning(i);
 	}
 	int hamiltonianEdges = vertexCount;
@@ -172,9 +172,9 @@ void TspProblem::doGreedyAlgoritm() {
 	bool* visited = new bool[vertexes];
 	visited[0] = true;
 	stack->addAtBeginning(0);
-	unsigned element, dst = 0, last = 0, i;
+	unsigned element, dst = 0, last = 0;
 	const int INF = 10000;
-	unsigned min = INF;
+	int min = INF;
 
 	bool minFlag = false;
 	while (stack->getSize() > 0) {
@@ -203,30 +203,27 @@ void TspProblem::doGreedyAlgoritm() {
 	delete stack;
 }
 
-//void TspProblem::doDynamicProgrammingAlgoritm() {
-//	const unsigned INF = 10000;
-//	unsigned vertexes = citiesMap->getVertexCount();
-//
-//	int improve = 0; //powtarzamy do ulepszenia
-//	unsigned currentBestDistance = INF;
-//	while (improve < 20) {
-//		unsigned tmpBestDistance = currentBestDistance;
-//		for (unsigned i = 0; i < vertexes - 1; i++) {
-//			for (unsigned k = i + 1; k < vertexes; k++) {
-//				TwoOptSwap(i, k);
-//
-//				double new_distance = new_tour.TourDistance();
-//
-//				if (new_distance < best_distance)
-//				{
-//					improve = 0;
-//					tour = new_tour;
-//					best_distance = new_distance;
-//					Notify(tour.TourDistance());
-//				}
-//			}
-//		}
-//
-//		improve++;
-//	}
-//}
+void TspProblem::doDynamicProgrammingAlgoritm() {
+	unsigned vertexes = citiesMap->getVertexCount();
+	doGreedyAlgoritm(); //2 opt startuje ju¿ z pewnej pocz¹tkowej drogi
+	CityGraph *alternative = new CityGraph(resultMap);
+	int improve = 0; //powtarzamy do ulepszenia
+	while (improve < 20) { //prób arbitralnie
+		unsigned bestDistance = resultMap->getDistance();
+		for (unsigned i = 0; i < vertexes - 1; i++) {
+			for (unsigned j = i + 1; j < vertexes; j++) {
+				alternative->twoOptSwap(i, j, resultMap);
+
+				unsigned newDistance = alternative->getDistance();
+
+				if (newDistance < bestDistance) {
+					improve = 0;
+					resultMap->copyFrom(alternative);
+				}
+			}
+		}
+
+		improve++;
+	}
+	delete alternative;
+}

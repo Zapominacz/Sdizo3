@@ -11,10 +11,10 @@ public:
 
 	void printListGraph(void);
 	void printMatrixGraph(void);
-	Edge* getAllEdges(void);
 	void generateGraph(const unsigned int, float, const int, const int);
-
+	void twoOptSwap(unsigned, unsigned, CityGraph*);
 	CityGraph(unsigned int);
+	CityGraph(CityGraph*);
 	~CityGraph();
 	bool insertEdge(unsigned int, unsigned int, int);
 	void clear(unsigned);
@@ -26,6 +26,10 @@ public:
 	int searchEdge(unsigned, unsigned);
 	EdgeList* getSimpleAdjFor(unsigned);
 	bool exist(unsigned, unsigned);
+	unsigned getDistance();
+	void copyFrom(CityGraph*); 
+	void vertexSameCopy(CityGraph*);
+	int getVertexAdj(unsigned);
 private:
 	unsigned int vertexCount;
 	unsigned int edgeCount;

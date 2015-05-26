@@ -2,6 +2,51 @@
 #include "stdafx.h"
 #include "CityGraph.h"
 
+CityGraph::CityGraph(CityGraph* source) {
+	copyFrom(source);
+}
+
+void CityGraph::copyFrom(CityGraph* source) {
+	this->vertexCount = source->vertexCount;
+	this->edgeCount = source->edgeCount;
+	matrix = new int*[vertexCount];
+	for (unsigned i = 0; i < vertexCount; i++) {
+		matrix[i] = new int[vertexCount];
+		for (unsigned j = 0; j < vertexCount; j++) {
+			matrix[i][j] = source->matrix[i][j];
+		}
+	}
+}
+
+//szybsza wersja dla zaincjalizowanych
+void CityGraph::vertexSameCopy(CityGraph* source) {
+	for (unsigned i = 0; i < vertexCount; i++) {
+		memcpy(this->matrix, source->matrix, sizeof(int) * vertexCount);
+	}
+}
+
+//Zwraca pierwszy napotkany wierzcholek z którym ³aczy siê podany
+int CityGraph::getVertexAdj(unsigned vertex) {
+	for (unsigned j = 0; j < vertexCount; j++) {
+		if (matrix[vertex][j] > -1) {
+			return matrix[vertex][j];
+		}
+	}
+	return -1;
+}
+
+unsigned CityGraph::getDistance() {
+	unsigned result = 0;
+	for (unsigned i = 0; i < vertexCount; i++) {
+		for (unsigned j = 0; j < vertexCount; j++) {
+			if (matrix[i][j] > 0) {
+				result += matrix[i][j];
+			}
+		}
+	}
+	return result;
+}
+
 void CityGraph::printMatrixGraph() {
 	using namespace std;
 	for (unsigned i = 0; i < vertexCount; i++) {
@@ -147,8 +192,8 @@ EdgeList* CityGraph::getSimpleAdjFor(unsigned v) {
 Edge* CityGraph::getAllEdges() {
 	Edge* result = new Edge[edgeCount];
 	int count = 0;
-	for (int i = 0; i < vertexCount; i++) {
-		for (int j = 0; j < vertexCount; j++) {
+	for (unsigned i = 0; i < vertexCount; i++) {
+		for (unsigned j = 0; j < vertexCount; j++) {
 			if (matrix[i][j] > -1) {
 				Edge e = Edge(i, j, matrix[i][j]);
 				result[count] = e;
@@ -157,4 +202,21 @@ Edge* CityGraph::getAllEdges() {
 		}
 	}
 	return result;
+}
+
+void CityGraph::twoOptSwap(unsigned v1, unsigned v2, CityGraph *source) {
+	//kopujemy niezmienione czêœci
+	for (unsigned i = 0; i < v1; i++) {
+		memcpy(matrix[i], source->matrix[i], vertexCount * sizeof(int));
+	}
+
+	//od v1 do v2 odwracamy kolejnosc
+	for (unsigned i = v1, j = 0; i <= v2; i++, j++) {
+		memcpy(matrix[i], source->matrix[v2 - j], vertexCount * sizeof(int));
+	}
+
+	// 3. take route[k+1] to end and add them in order to new_route
+	for (unsigned i = v2 + 1; i < vertexCount; i++) {
+		memcpy(matrix[i], source->matrix[i], vertexCount * sizeof(int));
+	}
 }
