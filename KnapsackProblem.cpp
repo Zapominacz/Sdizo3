@@ -100,7 +100,7 @@ void KnapsackProblem::loadBagItems() {
 	char patch[64];
 	cout << "sciezka: ";
 	cin >> patch;
-	fstream file(patch, std::ios_base::in);
+	fstream file(patch, ios_base::in);
 	int pojemnosc, liczba;
 	file >> pojemnosc;
 	file >> liczba;

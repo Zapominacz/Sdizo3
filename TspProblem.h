@@ -4,20 +4,24 @@
 
 class TspProblem {
 private:
-	CityGraph *cities;
-	CityGraph *result;
+	CityGraph *citiesMap;
+	CityGraph *resultMap;
+	void swapCities(unsigned char&, unsigned char&);
+	void permuteCities(unsigned char*, unsigned, unsigned);
+	void checkIsBetterPermutation(unsigned char*, unsigned);
+	//pomocnicze pola dla permutacji
+	unsigned char* currentBest;
+	unsigned currentBestLength;
 public:
 	TspProblem();
 	~TspProblem();
-	void setCityGraph(CityGraph*);
-	void setStartCity(int);
-	CityGraph* getCitiesMap();
-	CityGraph* getWay();
+	CityGraph* getCitiesMap() { return citiesMap; }
+	CityGraph* getWay() { return resultMap; }
 
 	void doFullCheckAlgoritm();
 	void doGreedyAlgoritm();
 	void doDynamicProgrammingAlgoritm();
 
 	void loadCityGraph();
-	void generateCityGraph(int, int);
+	void generateCityGraph(const unsigned, float, const unsigned);
 };
