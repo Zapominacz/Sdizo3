@@ -40,6 +40,7 @@ void TspProblem::doFullCheckAlgoritm() {
 	//Pierwsza permutacja
 	for (unsigned i = 0; i < cities; i++) {
 		citiesOrder[i] = i;
+		currentBest[i] = i;
 	}
 	permuteCities(citiesOrder, 0, cities);
 	unsigned v1 = currentBest[cities - 1];
@@ -192,6 +193,10 @@ void TspProblem::doGreedyAlgoritm() {
 	unsigned vertexes = citiesMap->getVertexCount();
 	bool* visited = new bool[vertexes];
 	visited[0] = true;
+	for (unsigned i = 1; i < vertexes; i++) {
+		visited[i] = false;
+	}
+
 	stack->addAtBeginning(0);
 	unsigned element, dst = 0, last = 0;
 	const int INF = 10000;
@@ -214,13 +219,14 @@ void TspProblem::doGreedyAlgoritm() {
 		if (minFlag) {
 			visited[dst] = true;
 			stack->addAtBeginning(dst);
-			citiesMap->insertEdge(last, dst, citiesMap->searchEdge(last, dst));
+			resultMap->insertEdge(last, dst, citiesMap->searchEdge(last, dst));
 			last = dst;
 			minFlag = false;
 		} else {
 			stack->removeAtBeginning();
 		}
 	}
+	resultMap->insertEdge(last, 0, citiesMap->searchEdge(last, 0));
 	delete stack;
 }
 
