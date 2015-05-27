@@ -179,8 +179,8 @@ void KnapsackProblem::generateBagItems(unsigned liczba, unsigned pojemnosc, unsi
 	knapsack = new Bag(pojemnosc);
 	random_device rand_dev;
 	mt19937 generator(rand_dev());
-	uniform_int_distribution<int> weightDistr(0, maxWaga);
-	uniform_int_distribution<int> valueDistr(0, maxWartosc);
+	uniform_int_distribution<int> weightDistr(1, maxWaga);
+	uniform_int_distribution<int> valueDistr(1, maxWartosc);
 	for (unsigned i = 0; i < liczba; i++) {
 		itemsList[i] = BagItem(weightDistr(generator), valueDistr(generator));
 	}

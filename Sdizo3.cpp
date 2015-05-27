@@ -9,7 +9,8 @@ void presentation() {
 	int problem = -1;
 
 	char ch;
-	int tmp, tmp2;
+	int tmp, tmp2, tmp3, tmp4;
+	float density;
 	TspProblem *tsp = new TspProblem();
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	do {
@@ -32,7 +33,12 @@ void presentation() {
 			case'2':
 				cout << "Ilosc miast: " << endl;
 				cin >> tmp;
-				tsp->generateCityGraph(tmp, 40, 50);
+				cout << "Max waga: " << endl;
+				cin >> tmp2;
+				cout << "Gestosc w procentach: " << endl;
+				cin >> density;
+				density /= 100;
+				tsp->generateCityGraph(tmp, density, tmp2);
 				break;
 			case'3':
 				tsp->doFullCheckAlgoritm();
@@ -44,12 +50,12 @@ void presentation() {
 				tsp->doDynamicProgrammingAlgoritm();
 				break;
 			case'6':
-				tsp->getCitiesMap()->printMatrixGraph();
-				tsp->getCitiesMap()->printListGraph();
-				break;
-			case'7':
 				tsp->getWay()->printMatrixGraph();
 				tsp->getWay()->printListGraph();
+				break;
+			case'7':
+				tsp->getCitiesMap()->printMatrixGraph();
+				tsp->getCitiesMap()->printListGraph();
 				break;
 			case'q':
 				problem = -1;
@@ -78,7 +84,11 @@ void presentation() {
 				cin >> tmp;
 				cout << "Pojemnosc: " << endl;
 				cin >> tmp2;
-				knapsack->generateBagItems(tmp, tmp2, 50, 20);
+				cout << "Max ciezar: " << endl;
+				cin >> tmp3;
+				cout << "Max wartosc: " << endl;
+				cin >> tmp4;
+				knapsack->generateBagItems(tmp, tmp2, tmp3, tmp4);
 				break;
 			case'3':
 				knapsack->doFullCheckAlgoritm();
@@ -116,14 +126,14 @@ void presentation() {
 				problem = 2;
 				break;
 			case 'q':
-				problem = -1;
+				problem = -2;
 				break;
 			default:
 				cout << "Zly wybor!" << endl;
 				continue;
 			}
 		}
-	} while (problem > -1);
+	} while (problem > -2);
 
 	delete knapsack;
 	delete tsp;

@@ -17,14 +17,20 @@ TspProblem::~TspProblem() {
 		delete[] currentBest;
 	}
 	if (citiesMap != NULL) {
-		delete[] citiesMap;
+		delete citiesMap;
 	}
 	if (resultMap != NULL) {
-		delete[] resultMap;
+		delete resultMap;
 	}
 }
 
 void TspProblem::doFullCheckAlgoritm() {
+
+	if (resultMap != NULL) {
+		delete resultMap;
+	}
+	resultMap = new CityGraph(citiesMap->getVertexCount());
+
 	unsigned cities = citiesMap->getVertexCount();
 	if (cities > 256) {
 		std::cerr << "Algorytm obsluguje do 256 miast" << std::endl;
@@ -105,13 +111,19 @@ void TspProblem::loadCityGraph() {
 	int waga;
 	for (unsigned v1 = 0; v1 < liczbaMiast; v1++) {
 		for (unsigned v2 = 0; v2 < liczbaMiast; v2++) {
-			file >> waga;
-			if (waga > 0) {
-				citiesMap->insertEdge(v1, v2, waga);
+			if (v1 != v2) {
+				file >> waga;
+				if (waga > 0) {
+					citiesMap->insertEdge(v1, v2, waga);
+				}
 			}
 		}
 	}
 	file.close();
+	if (resultMap != NULL) {
+		delete resultMap;
+	}
+	resultMap = new CityGraph(liczbaMiast);
 }
 
 void TspProblem::generateCityGraph(const unsigned vertexCount,
@@ -164,9 +176,18 @@ void TspProblem::generateCityGraph(const unsigned vertexCount,
 		delete gen;
 	}
 	delete el;
+	if (resultMap != NULL) {
+		delete resultMap;
+	}
+	resultMap = new CityGraph(vertexCount);
 }
 
 void TspProblem::doGreedyAlgoritm() {
+	if (resultMap != NULL) {
+		delete resultMap;
+	}
+	resultMap = new CityGraph(citiesMap->getVertexCount());
+
 	MyList *stack = new MyList();
 	unsigned vertexes = citiesMap->getVertexCount();
 	bool* visited = new bool[vertexes];

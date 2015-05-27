@@ -101,7 +101,9 @@ void CityGraph::deleteMatrix() {
 }
 
 void CityGraph::clear(unsigned vc) {
-	deleteMatrix();
+	if (matrix != NULL) {
+		deleteMatrix();
+	}
 	edgeCount = 0;
 	vertexCount = vc;
 	createMatrix();
