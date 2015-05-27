@@ -37,6 +37,7 @@ void TspProblem::doFullCheckAlgoritm() {
 	}
 	unsigned char* citiesOrder = new unsigned char[cities];
 	currentBest = new unsigned char[cities];
+	currentBestLength = 10000;
 	//Pierwsza permutacja
 	for (unsigned i = 0; i < cities; i++) {
 		citiesOrder[i] = i;
@@ -78,20 +79,20 @@ void TspProblem::permuteCities(unsigned char *citiesArray, unsigned i, unsigned 
 void TspProblem::checkIsBetterPermutation(unsigned char *citiesArray, unsigned length) {
 	unsigned totalLength = 0;
 	int weight = citiesMap->searchEdge((unsigned)citiesArray[length - 1], (unsigned)citiesArray[0]);
-	if (weight >= 0) {
+	if (weight > 0) {
 		totalLength += weight;
 	} else {
 		return; //nie ma po³¹czenia, nie ma co szukaæ
 	}
 	for (unsigned i = 1; i < length; i++) {
 		weight = citiesMap->searchEdge((unsigned)citiesArray[i - 1], (unsigned) citiesArray[i]);
-		if (weight >= 0) {
+		if (weight > 0) {
 			totalLength += weight;
 		} else {
 			return; //nie ma po³¹czenia, nie ma co szukaæ
 		}
 	}
-	if (totalLength > currentBestLength) {
+	if (totalLength < currentBestLength) {
 		currentBestLength = totalLength;
 		memcpy(currentBest, citiesArray, length * sizeof(unsigned char));
 	}
