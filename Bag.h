@@ -11,14 +11,11 @@ public:
 	bool isOverloaded() { return maxWeight < currWeight; };
 	void addItem(BagItem*);
 
-	Bag(unsigned maxWeight) {
-		bagItemList = new BagItemList();
-		currValue = 0;
-		currWeight = 0;
-		this->maxWeight = maxWeight;
-	}
+	Bag(unsigned);
 	~Bag();
 	void showContents();
+	bool isEmpty() { return bagItemList->getSize() == 0; }
+	void clear();
 private:
 	unsigned maxWeight;
 	unsigned currValue;

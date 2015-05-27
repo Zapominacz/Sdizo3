@@ -16,6 +16,7 @@ private:
 	BagItemNode* head;
 	unsigned size;
 public:
+	unsigned getSize() { return size; }
 	void printBag();
 	void addItem(BagItem*);
 	BagItemList() {

@@ -20,7 +20,7 @@ public:
 	}
 	void showItem() {
 		using namespace std;
-		cout << value << weight << valueDensity << endl;
+		cout << " Wartosc: " << value << " Waga: " << weight << " Gestosc: " << valueDensity << endl;
 	}
 private:
 	float valueDensity;

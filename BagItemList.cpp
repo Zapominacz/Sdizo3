@@ -17,9 +17,11 @@ void BagItemList::addItem(BagItem* item) {
 
 BagItemList::~BagItemList() {
 	while (head != NULL) {
-		delete head;
+		BagItemNode *tmp = head;
 		head = head->next;
+		delete tmp;
 	}
+	head = NULL;
 }
 
 void BagItemList::printBag() {
@@ -28,6 +30,6 @@ void BagItemList::printBag() {
 	cout << "Lista rzeczy:" << endl;
 	while (tmp != NULL) {
 		tmp->value->showItem();
-		tmp->next;
+		tmp = tmp->next;
 	}
 }

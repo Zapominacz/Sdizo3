@@ -58,7 +58,7 @@ void presentation() {
 				cout << "Zly wybor!" << endl;
 				continue;
 			}
-		} else if (problem == 0) {
+		} else if (problem == 2) {
 			cout << "Problem Plecakowy" << endl
 				<< "1. Wczytaj przedmioty" << endl
 				<< "2. Generuj przedmioty" << endl
@@ -116,13 +116,14 @@ void presentation() {
 				problem = 2;
 				break;
 			case 'q':
+				problem = -1;
 				break;
 			default:
 				cout << "Zly wybor!" << endl;
 				continue;
 			}
 		}
-	} while (true);
+	} while (problem > -1);
 
 	delete knapsack;
 	delete tsp;

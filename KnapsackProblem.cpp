@@ -32,49 +32,53 @@ void KnapsackProblem::printItems() {
 
 //Algorytm typu "Brute force"
 void KnapsackProblem::doFullCheckAlgoritm() {
-	Solution solution = Solution(0, 0); //rozwiazanie
+	if (!knapsack->isEmpty()) {
+		knapsack->clear();
+	}
 
-	fullCheck(knapsack->getMaxWeight(), itemsListSize - 1, solution); //rekurencyjne odwo³ania
+	unsigned long long table = 1;
+	unsigned long long bestTable = 0;
+	unsigned long long endOfTable = (1 << itemsListSize);
+	unsigned bestValue = 0;
+	while (table < endOfTable) {
+		unsigned long long tmp = 1;
+		unsigned tmpValue = 0;
+		unsigned tmpWeight = 0;
+		for (unsigned i = 0; i < itemsListSize; i++) {
+			bool isSet = table & tmp;
+			if (isSet) {
+				tmpWeight += itemsList[i].getWeight();
+				tmpValue += itemsList[i].getValue();
+			}
+			tmp = tmp << 1;
+		}
+		if (tmpWeight <= knapsack->getMaxWeight() && tmpValue > bestValue) {
+			bestTable = table;
+			bestValue = tmpValue;
+		}
+		table++;
+	}
+	unsigned long long tmp = 1;
 	for (unsigned i = 0; i < itemsListSize; i++) {
-		if ((solution.bitMask & ((long long) 1 << i)) == 1) { //zgodnei z bitami wsadzam rzeczy do plecaka wynikowego
+		bool isSet = bestTable & tmp;
+		if (isSet) {
 			knapsack->addItem(&itemsList[i]);
 		}
+		tmp = tmp << 1;
 	}
 }
-
-
-
-void KnapsackProblem::fullCheck(unsigned weight, int index, Solution& solution) {
-	if (index < 0) {
-		solution.bitMask = 0; //warunek terminujacy rekurencje
-		solution.value = 0;
-	} else if (weight < itemsList[index].getWeight()) {
-		fullCheck(weight, index - 1, solution); //gdy waga rzeczy wieksza, nie ma sensu 2 przypadku
-	} else {
-		Solution s1, s2;
-		fullCheck(weight, index - 1, s1); //drzewiascie odwo³uje siê do ni¿szych indeksów
-		fullCheck(weight - itemsList[index].getWeight(), index - 1, s2);
-
-		//wystarczy przypisac jednemu, drugi bêdzie przy zwijaniu rekurencji
-		s2.value += itemsList[index].getValue();
-		s2.bitMask |= ((long long) 1 << index);
-
-		//wieksza wartosc jest rozwiazaniem
-		solution = s1;
-		if (solution.value < s2.value) {
-			solution = s2;
-		}
-	}
-}
-
 
 void KnapsackProblem::doGreedyAlgoritm() {
+	if (!knapsack->isEmpty()) {
+		knapsack->clear();
+	}
+
 	sortItems();
-	unsigned i = 0;
 	//rzeczy jest zawsze wiecej niz pojemnosc plecaka
-	while (!knapsack->isOverloaded()) {
-		knapsack->addItem(&itemsList[i]);
-		i++;
+	for (unsigned i = 0; i < itemsListSize; i++) {
+		if (itemsList[i].getWeight() + knapsack->getCurrWeight() < knapsack->getMaxWeight()) {
+			knapsack->addItem(&itemsList[i]);
+		}
 	}
 }
 
@@ -98,8 +102,12 @@ void KnapsackProblem::sortItems() {
 }
 
 void KnapsackProblem::doDynamicProgrammingAlgoritm() {
+	if (!knapsack->isEmpty()) {
+		knapsack->clear();
+	}
+
 	unsigned** bestTable = new unsigned*[itemsListSize + 1];
-	for (unsigned i = 0; i < itemsListSize; i++) {
+	for (unsigned i = 0; i < itemsListSize + 1; i++) {
 		bestTable[i] = new unsigned[knapsack->getMaxWeight() + 1];
 		for (unsigned j = 0; j <= knapsack->getMaxWeight(); j++) {
 			if (i == 0 || j == 0) {
@@ -151,7 +159,6 @@ void KnapsackProblem::loadBagItems() {
 	unsigned waga, wartosc, i = 0;
 	while (file >> waga) {
 		file >> wartosc;
-		file >> waga;
 		itemsList[i] = BagItem(waga, wartosc);
 		i++;
 	}
