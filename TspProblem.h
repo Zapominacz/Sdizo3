@@ -24,5 +24,5 @@ public:
 	void doDynamicProgrammingAlgoritm();
 
 	void loadCityGraph();
-	void generateCityGraph(const unsigned, float, const unsigned);
+	void generateCityGraph(const unsigned, const unsigned);
 };

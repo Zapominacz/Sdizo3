@@ -10,7 +10,6 @@ void presentation() {
 
 	char ch;
 	int tmp, tmp2, tmp3, tmp4;
-	float density;
 	TspProblem *tsp = new TspProblem();
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	do {
@@ -35,10 +34,7 @@ void presentation() {
 				cin >> tmp;
 				cout << "Max waga: " << endl;
 				cin >> tmp2;
-				cout << "Gestosc w procentach: " << endl;
-				cin >> density;
-				density /= 100;
-				tsp->generateCityGraph(tmp, density, tmp2);
+				tsp->generateCityGraph(tmp, tmp2);
 				break;
 			case'3':
 				tsp->doFullCheckAlgoritm();
@@ -206,7 +202,7 @@ void testTsp() {
 	TspProblem *tsp = new TspProblem();
 	CityGraph *graph = NULL;
 	for (int i = 0; i < 5; i++) {
-		tsp->generateCityGraph(cities[i], 40, 50);
+		tsp->generateCityGraph(cities[i], 50);
 		Timer *timerF = new Timer();
 		Timer *timerG = new Timer();
 		Timer *timerD = new Timer();
@@ -249,7 +245,7 @@ void testTsp() {
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	//presentation();
-	//testKnapsack();
+	testKnapsack();
 	testTsp();
 	return 0;
 }

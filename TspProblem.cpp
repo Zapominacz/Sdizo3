@@ -128,64 +128,31 @@ void TspProblem::loadCityGraph() {
 	resultMap = new CityGraph(liczbaMiast);
 }
 
-void TspProblem::generateCityGraph(const unsigned vertexCount,
-		float density, const unsigned weightTo) {
+void TspProblem::generateCityGraph(const unsigned vertexCount, const unsigned weightTo) {
 	using namespace std;
 	if (citiesMap != NULL) {
 		citiesMap->clear(vertexCount);
 	} else {
 		citiesMap = new CityGraph(vertexCount);
 	}
-	int edgesToGenerate = (int)((density * vertexCount * (vertexCount - 1)) / 2);
-	edgesToGenerate *= 2;
-	edgesToGenerate -= vertexCount;
-
-	MyList *list = new MyList();
+	if (resultMap != NULL) {
+		resultMap->clear(vertexCount);
+	} else {
+		resultMap = new CityGraph(vertexCount);
+	}
 	std::random_device rand_dev;
 	std::uniform_int_distribution<int> weightDistr(1, weightTo);
 	std::mt19937 generator(rand_dev());
-	for (unsigned i = 0; i < vertexCount; i++) {
-		list->addAtBeginning(i);
-	}
-	int hamiltonianEdges = vertexCount;
-	std::uniform_int_distribution<int> distr(0, vertexCount - 1);
-	int lastVertex = list->removeAt(distr(generator));
-	int firstVertex = lastVertex;
-	hamiltonianEdges--;
-	while(hamiltonianEdges > 0) {
-		std::uniform_int_distribution<int> distr(0, hamiltonianEdges - 1);
-		int tmp = list->removeAt(distr(generator));
-		citiesMap->insertEdge(lastVertex, tmp, weightDistr(generator));
-		lastVertex = tmp;
-		hamiltonianEdges--;
-	}
-	citiesMap->insertEdge(lastVertex, firstVertex, weightDistr(generator));
 
-	//Generuje wszystkie mo¿liwe krawêdzie które mogê dodaæ
-	delete list;
-	EdgeList *el = new EdgeList();
-	unsigned jdelim = vertexCount;
-	for (unsigned i = 0; i < vertexCount; i++) {
-		for (unsigned j = 0; j < jdelim; j++) {
-			el->add(new Edge(i, j, weightDistr(generator)));
-		}
-	}
+
 	//losuje z puli krawêdzi i dodaje a¿ do otrzymania po¿¹danej iloœci
-	for (int i = 0; i < edgesToGenerate; i++) {
-		std::uniform_int_distribution<int> edgeDistr(0, el->getSize() - 1);
-		int pos = edgeDistr(generator);
-		Edge* gen = el->pop(pos);
-		bool exist = citiesMap->insertEdge(gen->v1, gen->v2, gen->weight);
-		if (exist) {
-			i--;
+	for (unsigned i = 0; i < vertexCount; i++) {
+		for (unsigned j = 0; j < vertexCount; j++) {
+			if (i != j) {
+				citiesMap->insertEdge(i, j, weightDistr(generator));
+			}
 		}
-		delete gen;
 	}
-	delete el;
-	if (resultMap != NULL) {
-		delete resultMap;
-	}
-	resultMap = new CityGraph(vertexCount);
 }
 
 void TspProblem::doGreedyAlgoritm() {
@@ -239,7 +206,7 @@ void TspProblem::doDynamicProgrammingAlgoritm() {
 	unsigned vertexes = citiesMap->getVertexCount();
 	doGreedyAlgoritm(); //2 opt startuje ju¿ z pewnej pocz¹tkowej drogi
 	CityGraph *alternative = new CityGraph(resultMap);
-	int improved = true; //powtarzamy do ulepszenia
+	bool improved = true; //powtarzamy do ulepszenia
 	while (improved == true) { //prób arbitralnie
 		improved = false;
 		unsigned bestDistance = resultMap->getDistance();
