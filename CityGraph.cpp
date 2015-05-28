@@ -29,7 +29,7 @@ void CityGraph::vertexSameCopy(CityGraph* source) {
 int CityGraph::getVertexAdj(unsigned vertex) {
 	for (unsigned j = 0; j < vertexCount; j++) {
 		if (matrix[vertex][j] > -1) {
-			return matrix[vertex][j];
+			return j;
 		}
 	}
 	return -1;
@@ -206,19 +206,24 @@ Edge* CityGraph::getAllEdges() {
 	return result;
 }
 
-void CityGraph::twoOptSwap(unsigned v1, unsigned v2, CityGraph *source) {
+void CityGraph::twoOptSwap(unsigned v1, unsigned v2, CityGraph *source, CityGraph* map) {
+	int *route = new int[vertexCount];
+	route[0] = 0;
+	for (unsigned i = 1; i < vertexCount; i++) {
+		route[i] = getVertexAdj(route[i - 1]);
+	}
+	for (unsigned i = v1, j = 0; i <= v2/2; i++, j++) { //odwracamy kolejnosc od v1 do v2
+		int tmp = route[i];
+		route[i] = route[v2 - j];
+		route[v2 - j] = tmp;
+	}
+	clear(vertexCount);
+
 	//kopujemy niezmienione czêœci
-	for (unsigned i = 0; i < v1; i++) {
-		memcpy(matrix[i], source->matrix[i], vertexCount * sizeof(int));
+	for (unsigned i = 0; i < vertexCount - 1; i++) {
+		matrix[route[i]][route[i + 1]] = map->matrix[route[i]][route[i + 1]];
 	}
+	matrix[route[vertexCount - 1]][route[0]] = map->matrix[route[vertexCount - 1]][route[0]];
 
-	//od v1 do v2 odwracamy kolejnosc
-	for (unsigned i = v1, j = 0; i <= v2; i++, j++) {
-		memcpy(matrix[i], source->matrix[v2 - j], vertexCount * sizeof(int));
-	}
-
-	// 3. take route[k+1] to end and add them in order to new_route
-	for (unsigned i = v2 + 1; i < vertexCount; i++) {
-		memcpy(matrix[i], source->matrix[i], vertexCount * sizeof(int));
-	}
+	delete[] route;
 }

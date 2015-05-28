@@ -12,7 +12,7 @@ public:
 	void printListGraph(void);
 	void printMatrixGraph(void);
 	void generateGraph(const unsigned int, float, const int, const int);
-	void twoOptSwap(unsigned, unsigned, CityGraph*);
+	void twoOptSwap(unsigned, unsigned, CityGraph*, CityGraph*);
 	CityGraph(unsigned int);
 	CityGraph(CityGraph*);
 	~CityGraph();

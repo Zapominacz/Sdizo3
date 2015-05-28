@@ -131,7 +131,11 @@ void TspProblem::loadCityGraph() {
 void TspProblem::generateCityGraph(const unsigned vertexCount,
 		float density, const unsigned weightTo) {
 	using namespace std;
-	citiesMap->clear(vertexCount);
+	if (citiesMap != NULL) {
+		citiesMap->clear(vertexCount);
+	} else {
+		citiesMap = new CityGraph(vertexCount);
+	}
 	int edgesToGenerate = (int)((density * vertexCount * (vertexCount - 1)) / 2);
 	edgesToGenerate *= 2;
 	edgesToGenerate -= vertexCount;
@@ -235,23 +239,22 @@ void TspProblem::doDynamicProgrammingAlgoritm() {
 	unsigned vertexes = citiesMap->getVertexCount();
 	doGreedyAlgoritm(); //2 opt startuje ju¿ z pewnej pocz¹tkowej drogi
 	CityGraph *alternative = new CityGraph(resultMap);
-	int improve = 0; //powtarzamy do ulepszenia
-	while (improve < 20) { //prób arbitralnie
+	int improved = true; //powtarzamy do ulepszenia
+	while (improved == true) { //prób arbitralnie
+		improved = false;
 		unsigned bestDistance = resultMap->getDistance();
 		for (unsigned i = 0; i < vertexes - 1; i++) {
 			for (unsigned j = i + 1; j < vertexes; j++) {
-				alternative->twoOptSwap(i, j, resultMap);
+				alternative->twoOptSwap(i, j, resultMap, citiesMap);
 
 				unsigned newDistance = alternative->getDistance();
 
 				if (newDistance < bestDistance) {
-					improve = 0;
+					improved = true;
 					resultMap->copyFrom(alternative);
 				}
 			}
 		}
-
-		improve++;
 	}
 	delete alternative;
 }

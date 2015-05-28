@@ -248,7 +248,9 @@ void testTsp() {
 
 
 int _tmain(int argc, _TCHAR* argv[]) {
-	presentation();
+	//presentation();
+	//testKnapsack();
+	testTsp();
 	return 0;
 }
 
