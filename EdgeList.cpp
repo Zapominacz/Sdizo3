@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "EdgeList.h"
 
+//wariacja listy
 EdgeList::EdgeList(int vertex) {
 	this->vertex = vertex;
 	head = NULL;

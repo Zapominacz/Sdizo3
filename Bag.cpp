@@ -12,6 +12,7 @@ void Bag::showContents() {
 	bagItemList->printBag();
 }
 
+//dodaje do plecaka rzecz
 void Bag::addItem(BagItem* item) {
 	bagItemList->addItem(item);
 	currValue += item->getValue();

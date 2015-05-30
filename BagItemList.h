@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "BagItem.h"
 
-/* Klasa zawieraj¹ca rzeczy wsadzone do plecaka */
+/* Klasa zawieraj¹ca rzeczy wsadzone do plecaka - struktura listy */
 class BagItemList {
 private:
 	struct BagItemNode {

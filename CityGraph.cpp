@@ -35,6 +35,7 @@ int CityGraph::getVertexAdj(unsigned vertex) {
 	return -1;
 }
 
+//sumuje nieujemne wagi
 unsigned CityGraph::getDistance() {
 	unsigned result = 0;
 	for (unsigned i = 0; i < vertexCount; i++) {
@@ -206,10 +207,11 @@ Edge* CityGraph::getAllEdges() {
 	return result;
 }
 
+//uzywane do algrytmu 2 opt
 void CityGraph::twoOptSwap(unsigned v1, unsigned v2, CityGraph *source, CityGraph* map) {
 	int *route = new int[vertexCount];
 	route[0] = 0;
-	for (unsigned i = 1; i < vertexCount; i++) {
+	for (unsigned i = 1; i < vertexCount; i++) { //tablica kolejnych wierzcho³ków
 		route[i] = getVertexAdj(route[i - 1]);
 	}
 	for (unsigned i = v1, j = 0; i <= v2/2; i++, j++) { //odwracamy kolejnosc od v1 do v2
@@ -219,7 +221,7 @@ void CityGraph::twoOptSwap(unsigned v1, unsigned v2, CityGraph *source, CityGrap
 	}
 	clear(vertexCount);
 
-	//kopujemy niezmienione czêœci
+	//przepisujemy na graf
 	for (unsigned i = 0; i < vertexCount - 1; i++) {
 		matrix[route[i]][route[i + 1]] = map->matrix[route[i]][route[i + 1]];
 	}

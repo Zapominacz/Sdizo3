@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "CityGraph.h"
 
+/*Klasa rozwi¹zauj¹ca problem komiwoja¿era*/
 class TspProblem {
 private:
 	CityGraph *citiesMap;
@@ -21,7 +22,7 @@ public:
 
 	void doFullCheckAlgoritm();
 	void doGreedyAlgoritm();
-	void doDynamicProgrammingAlgoritm();
+	void do2optAlgorithm();
 
 	void loadCityGraph();
 	void generateCityGraph(const unsigned, const unsigned);

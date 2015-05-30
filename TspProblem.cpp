@@ -24,6 +24,7 @@ TspProblem::~TspProblem() {
 	}
 }
 
+// Przegl¹d zupe³ny permutacji
 void TspProblem::doFullCheckAlgoritm() {
 
 	if (resultMap != NULL) {
@@ -32,7 +33,7 @@ void TspProblem::doFullCheckAlgoritm() {
 	resultMap = new CityGraph(citiesMap->getVertexCount());
 
 	unsigned cities = citiesMap->getVertexCount();
-	if (cities > 256) {
+	if (cities > 256) { //mo¿na rozszerzyæ - zamiast char np. int
 		std::cerr << "Algorytm obsluguje do 256 miast" << std::endl;
 	}
 	unsigned char* citiesOrder = new unsigned char[cities];
@@ -46,7 +47,7 @@ void TspProblem::doFullCheckAlgoritm() {
 	permuteCities(citiesOrder, 0, cities);
 	unsigned v1 = currentBest[cities - 1];
 	unsigned v2 = currentBest[0];
-	resultMap->clear(cities);
+	resultMap->clear(cities); //wprowadzam najlepsz¹ do wyniku
 	resultMap->insertEdge(v1, v2, citiesMap->searchEdge(v1, v2));
 	for (unsigned i = 1; i < cities; i++) {
 		v1 = currentBest[i - 1];
@@ -58,12 +59,14 @@ void TspProblem::doFullCheckAlgoritm() {
 	currentBest = NULL;
 }
 
+// zamiana miast
 void TspProblem::swapCities(unsigned char& one, unsigned char& two) {
 	unsigned char tmp = one;
 	one = two;
 	two = tmp;
 }
 
+//klasa tworz¹ca wszystkie mo¿liwe permutacje
 void TspProblem::permuteCities(unsigned char *citiesArray, unsigned i, unsigned length) {
 	if (length == i){
 		checkIsBetterPermutation(citiesArray, length);
@@ -98,6 +101,7 @@ void TspProblem::checkIsBetterPermutation(unsigned char *citiesArray, unsigned l
 	}
 }
 
+//laduje graf z pliku
 void TspProblem::loadCityGraph() {
 	using namespace std;
 	char patch[64];
@@ -128,13 +132,14 @@ void TspProblem::loadCityGraph() {
 	resultMap = new CityGraph(liczbaMiast);
 }
 
+//generuje graf w oparciu o argumenty
 void TspProblem::generateCityGraph(const unsigned vertexCount, const unsigned weightTo) {
 	using namespace std;
 	if (citiesMap != NULL) {
 		citiesMap->clear(vertexCount);
 	} else {
 		citiesMap = new CityGraph(vertexCount);
-	}
+	} //czyszcze poprzednie wyniki, grafy
 	if (resultMap != NULL) {
 		resultMap->clear(vertexCount);
 	} else {
@@ -145,7 +150,7 @@ void TspProblem::generateCityGraph(const unsigned vertexCount, const unsigned we
 	std::mt19937 generator(rand_dev());
 
 
-	//losuje z puli krawêdzi i dodaje a¿ do otrzymania po¿¹danej iloœci
+	//laczy kazdy wierzcholek z kazdym
 	for (unsigned i = 0; i < vertexCount; i++) {
 		for (unsigned j = 0; j < vertexCount; j++) {
 			if (i != j) {
@@ -155,13 +160,14 @@ void TspProblem::generateCityGraph(const unsigned vertexCount, const unsigned we
 	}
 }
 
+//Algorytm najblizszego sasiada - zachlanny
 void TspProblem::doGreedyAlgoritm() {
 	if (resultMap != NULL) {
 		delete resultMap;
 	}
 	resultMap = new CityGraph(citiesMap->getVertexCount());
 
-	MyList *stack = new MyList();
+	MyList *stack = new MyList(); //pseudo stos - lista wierzcholkow
 	unsigned vertexes = citiesMap->getVertexCount();
 	bool* visited = new bool[vertexes];
 	visited[0] = true;
@@ -169,7 +175,7 @@ void TspProblem::doGreedyAlgoritm() {
 		visited[i] = false;
 	}
 
-	stack->addAtBeginning(0);
+	stack->addAtBeginning(0); //pierwsze miasto
 	unsigned element, dst = 0, last = 0;
 	const int INF = 10000;
 	int min = INF;
@@ -178,7 +184,7 @@ void TspProblem::doGreedyAlgoritm() {
 	while (stack->getSize() > 0) {
 		element = stack->getValueAt(0);
 		min = INF;
-
+		//dodaje krawedz o najmniejszej wadze, ktora nei zosta³a dodana
 		for(unsigned i = 0; i < vertexes; i++) {
 			int weight = citiesMap->searchEdge(element, i);
 			if (weight > 0 && visited[i] == false && min > weight) {
@@ -188,6 +194,7 @@ void TspProblem::doGreedyAlgoritm() {
 			}
 		}
 
+		//dodaje do wyniku
 		if (minFlag) {
 			visited[dst] = true;
 			stack->addAtBeginning(dst);
@@ -198,27 +205,28 @@ void TspProblem::doGreedyAlgoritm() {
 			stack->removeAtBeginning();
 		}
 	}
-	resultMap->insertEdge(last, 0, citiesMap->searchEdge(last, 0));
+	resultMap->insertEdge(last, 0, citiesMap->searchEdge(last, 0)); //tworze cykl
 	delete stack;
 }
 
-void TspProblem::doDynamicProgrammingAlgoritm() {
+
+void TspProblem::do2optAlgorithm() {
 	unsigned vertexes = citiesMap->getVertexCount();
 	doGreedyAlgoritm(); //2 opt startuje ju¿ z pewnej pocz¹tkowej drogi
 	CityGraph *alternative = new CityGraph(resultMap);
 	bool improved = true; //powtarzamy do ulepszenia
-	while (improved == true) { //prób arbitralnie
+	while (improved == true) { //czy cos uepszono poprzednio
 		improved = false;
 		unsigned bestDistance = resultMap->getDistance();
 		for (unsigned i = 0; i < vertexes - 1; i++) {
 			for (unsigned j = i + 1; j < vertexes; j++) {
 				alternative->twoOptSwap(i, j, resultMap, citiesMap);
-
+				//proba ulepszenia - zamiana
 				unsigned newDistance = alternative->getDistance();
 
 				if (newDistance < bestDistance) {
 					improved = true;
-					resultMap->copyFrom(alternative);
+					resultMap->copyFrom(alternative); //udana - nowy wynik
 				}
 			}
 		}

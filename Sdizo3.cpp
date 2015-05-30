@@ -43,7 +43,7 @@ void presentation() {
 				tsp->doGreedyAlgoritm();
 				break;
 			case'5':
-				tsp->doDynamicProgrammingAlgoritm();
+				tsp->do2optAlgorithm();
 				break;
 			case'6':
 				tsp->getWay()->printMatrixGraph();
@@ -138,17 +138,17 @@ void presentation() {
 
 void testKnapsack() {
 	using namespace std;
-	int items[] = { 25, 33, 35 };
-	int sizes[] = { 10, 20, 30 };
-	int times[] = { 5, 1, 1, 1};
+	int items[] = { 10, 15, 20, 25, 30 };
+	int sizes[] = { 50, 500, 5000 };
+	int times[] = { 100, 100, 100, 100, 100};
 	fstream fileF("knapsackFull.txt", ios_base::app);
 	fstream fileG("knapsackGreedy.txt", ios_base::app);
 	fstream fileD("knapsackDynamic.txt", ios_base::app);
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	Bag* result = NULL;
 	for (int i = 0; i < 5; i++) {
-		knapsack->generateBagItems(items[i], 1, 50, 20);
 		for (int j = 0; j < 3; j++) {
+			knapsack->generateBagItems(items[i], sizes[j], 50, 20);
 			Timer *timerF = new Timer();
 			Timer *timerG = new Timer();
 			Timer *timerD = new Timer();
@@ -191,8 +191,8 @@ void testKnapsack() {
 
 void testTsp() {
 	using namespace std;
-	int cities[] = { 5, 6, 7, 8, 9};
-	int times[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	int cities[] = { 10, 20, 30};
+	int times[] = { 100, 100, 100 };
 	fstream fileF("tspFull.txt", ios_base::app);
 	fstream fileG("tspGreedy.txt", ios_base::app);
 	fstream fileD("tspDynamic.txt", ios_base::app);
@@ -213,7 +213,7 @@ void testTsp() {
 			timerG->stopTimer();
 			graph = tsp->getWay();
 			timerD->startTimer();
-			tsp->doDynamicProgrammingAlgoritm();
+			tsp->do2optAlgorithm();
 			timerD->stopTimer();
 			graph = tsp->getWay();
 
@@ -241,9 +241,9 @@ void testTsp() {
 
 
 int _tmain(int argc, _TCHAR* argv[]) {
-	//presentation();
-	testTsp();
-	testKnapsack();
+	presentation();
+	//testTsp();
+	//testKnapsack();
 	return 0;
 }
 

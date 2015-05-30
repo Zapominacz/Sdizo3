@@ -36,13 +36,13 @@ void KnapsackProblem::doFullCheckAlgoritm() {
 		knapsack->clear();
 	}
 	uint64_t table = 1;
-	uint64_t bestTable = 0;
+	uint64_t bestTable = 0; //zapisuje na 64 bitowym polu - 1 bit reprezentuje 1 rzecz
 	uint64_t endOfTable = (table << itemsListSize);
 	unsigned bestValue = 0;
-	while (table < endOfTable) {
+	while (table < endOfTable) { //dopoki mamy mozliwosc
 		uint64_t tmp = 1;
 		unsigned tmpValue = 0;
-		unsigned tmpWeight = 0;
+		unsigned tmpWeight = 0; //dodajemy rzeczy, gdy ich bity sa w stanei wysokim
 		for (unsigned i = 0; i < itemsListSize; i++) {
 			bool isSet = table & tmp;
 			if (isSet) {
@@ -51,19 +51,21 @@ void KnapsackProblem::doFullCheckAlgoritm() {
 			}
 			tmp = tmp << 1;
 		}
+		//sprawdzamy czy lepszy
 		if (tmpWeight <= knapsack->getMaxWeight() && tmpValue > bestValue) {
 			bestTable = table;
 			bestValue = tmpValue;
 		}
 		table += 1;
 	}
+	//przepisujemy graf
 	uint64_t tmp = 1;
 	for (unsigned i = 0; i < itemsListSize; i++) {
 		bool isSet = bestTable & tmp;
 		if (isSet) {
 			knapsack->addItem(&itemsList[i]);
 		}
-		tmp = tmp << 1;
+		tmp = tmp << 1; //przesuwamy maske
 	}
 }
 
@@ -108,6 +110,7 @@ void KnapsackProblem::doDynamicProgrammingAlgoritm() {
 	unsigned** bestTable = new unsigned*[itemsListSize + 1];
 	for (unsigned i = 0; i < itemsListSize + 1; i++) {
 		bestTable[i] = new unsigned[knapsack->getMaxWeight() + 1];
+		//tworze iteracyjnie tabele
 		for (unsigned j = 0; j <= knapsack->getMaxWeight(); j++) {
 			if (i == 0 || j == 0) {
 				bestTable[i][j] = 0;
@@ -121,7 +124,7 @@ void KnapsackProblem::doDynamicProgrammingAlgoritm() {
 			}
 		}
 	}
-	//czy indeksy sa ok?
+	//szukam wartosci w tablicy
 	unsigned w = knapsack->getMaxWeight();
 	for (unsigned i = itemsListSize; i > 0; i--) {
 		if (bestTable[i][w] != bestTable[i - 1][w]) {

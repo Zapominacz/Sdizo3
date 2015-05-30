@@ -3,7 +3,7 @@
 #include "Edge.h"
 #include "EdgeList.h"
 
-/** implementacja grafu jako macierz s¹siedztwa*/
+/** implementacja grafu jako macierz s¹siedztwa dla komiwojazera*/
 class CityGraph {
 public:
 	unsigned getVertexCount(void) { return vertexCount; }
