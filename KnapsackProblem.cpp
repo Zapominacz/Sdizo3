@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "KnapsackProblem.h"
 #include <random>
-
+#include <stdint.h>
 
 KnapsackProblem::KnapsackProblem() {
 	knapsack = NULL;
@@ -35,13 +35,12 @@ void KnapsackProblem::doFullCheckAlgoritm() {
 	if (!knapsack->isEmpty()) {
 		knapsack->clear();
 	}
-
-	unsigned long long table = 1;
-	unsigned long long bestTable = 0;
-	unsigned long long endOfTable = (1 << itemsListSize);
+	uint64_t table = 1;
+	uint64_t bestTable = 0;
+	uint64_t endOfTable = (table << itemsListSize);
 	unsigned bestValue = 0;
 	while (table < endOfTable) {
-		unsigned long long tmp = 1;
+		uint64_t tmp = 1;
 		unsigned tmpValue = 0;
 		unsigned tmpWeight = 0;
 		for (unsigned i = 0; i < itemsListSize; i++) {
@@ -56,9 +55,9 @@ void KnapsackProblem::doFullCheckAlgoritm() {
 			bestTable = table;
 			bestValue = tmpValue;
 		}
-		table++;
+		table += 1;
 	}
-	unsigned long long tmp = 1;
+	uint64_t tmp = 1;
 	for (unsigned i = 0; i < itemsListSize; i++) {
 		bool isSet = bestTable & tmp;
 		if (isSet) {

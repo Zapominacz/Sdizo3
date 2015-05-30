@@ -138,9 +138,9 @@ void presentation() {
 
 void testKnapsack() {
 	using namespace std;
-	int items[] = { 10, 20, 30, 40, 50 };
+	int items[] = { 25, 33, 35 };
 	int sizes[] = { 10, 20, 30 };
-	int times[] = { 100, 100, 100, 100, 100 };
+	int times[] = { 5, 1, 1, 1};
 	fstream fileF("knapsackFull.txt", ios_base::app);
 	fstream fileG("knapsackGreedy.txt", ios_base::app);
 	fstream fileD("knapsackDynamic.txt", ios_base::app);
@@ -152,8 +152,6 @@ void testKnapsack() {
 			Timer *timerF = new Timer();
 			Timer *timerG = new Timer();
 			Timer *timerD = new Timer();
-			Bag* bag = new Bag(sizes[j]);
-			knapsack->setKnapsack(bag);
 			for (int k = 0; k < times[i]; k++) {
 				timerF->startTimer();
 				knapsack->doFullCheckAlgoritm();
@@ -185,7 +183,6 @@ void testKnapsack() {
 			delete timerD;
 		}
 	}
-	delete result;
 	delete knapsack;
 	fileF.close();
 	fileG.close();
@@ -194,8 +191,8 @@ void testKnapsack() {
 
 void testTsp() {
 	using namespace std;
-	int cities[] = { 10, 20, 30, 40, 50 };
-	int times[] = { 100, 100, 100, 100, 100 };
+	int cities[] = { 5, 6, 7, 8, 9};
+	int times[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	fstream fileF("tspFull.txt", ios_base::app);
 	fstream fileG("tspGreedy.txt", ios_base::app);
 	fstream fileD("tspDynamic.txt", ios_base::app);
@@ -245,8 +242,8 @@ void testTsp() {
 
 int _tmain(int argc, _TCHAR* argv[]) {
 	//presentation();
-	testKnapsack();
 	testTsp();
+	testKnapsack();
 	return 0;
 }
 
