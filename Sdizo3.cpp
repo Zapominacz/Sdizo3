@@ -18,8 +18,8 @@ void presentation() {
 			cout << "Problem Komiwojazera" << endl
 				<< "1. Wczytaj miasta" << endl
 				<< "2. Generuj miasta" << endl
-				<< "3. Przegl¹d zupe³ny" << endl
-				<< "4. Algorytm zach³anny" << endl
+				<< "3. Przeglad zupelny" << endl
+				<< "4. Algorytm zachlanny" << endl
 				<< "5. Algorytm przeszukiwania lokalnego" << endl
 				<< "6. Pokaz wynik" << endl
 				<< "7. Pokaz miasta" << endl
@@ -64,8 +64,8 @@ void presentation() {
 			cout << "Problem Plecakowy" << endl
 				<< "1. Wczytaj przedmioty" << endl
 				<< "2. Generuj przedmioty" << endl
-				<< "3. Przegl¹d zupe³ny" << endl
-				<< "4. Algorytm zach³anny" << endl
+				<< "3. Przeglad zupelny" << endl
+				<< "4. Algorytm zachlanny" << endl
 				<< "5. Algorytm dynamiczny" << endl
 				<< "6. Pokaz plecak" << endl
 				<< "7. Pokaz przedmioty" << endl

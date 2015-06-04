@@ -102,6 +102,14 @@ void KnapsackProblem::sortItems() {
 	}
 }
 
+unsigned maximum(unsigned a, unsigned b) {
+	unsigned result = a;
+	if (b > a) { 
+		result = b; 
+	} 
+	return result;
+}
+
 void KnapsackProblem::doDynamicProgrammingAlgoritm() {
 	if (!knapsack->isEmpty()) {
 		knapsack->clear();
@@ -116,7 +124,7 @@ void KnapsackProblem::doDynamicProgrammingAlgoritm() {
 				bestTable[i][j] = 0;
 			}
 			else if (itemsList[i - 1].getWeight() <= j) {
-				bestTable[i][j] = max(itemsList[i - 1].getValue() + bestTable[i - 1][j - itemsList[i - 1].getWeight()],
+				bestTable[i][j] = maximum(itemsList[i - 1].getValue() + bestTable[i - 1][j - itemsList[i - 1].getWeight()],
 					bestTable[i - 1][j]);
 			}
 			else {
