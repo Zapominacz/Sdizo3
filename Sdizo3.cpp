@@ -140,14 +140,16 @@ void testKnapsack() {
 	using namespace std;
 	int items[] = { 10, 15, 20, 25, 30 };
 	int sizes[] = { 50, 500, 5000 };
-	int times[] = { 100, 100, 100, 100, 100};
+	int times[] = { 10, 10, 10, 10, 10, 10, 10, 10};
+	int itemsLength = 5;
+	int sizesLegth = 3;
 	fstream fileF("knapsackFull.txt", ios_base::app);
 	fstream fileG("knapsackGreedy.txt", ios_base::app);
 	fstream fileD("knapsackDynamic.txt", ios_base::app);
 	KnapsackProblem *knapsack = new KnapsackProblem();
 	Bag* result = NULL;
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 3; j++) {
+	for (int i = 0; i < itemsLength; i++) {
+		for (int j = 0; j < sizesLegth; j++) {
 			knapsack->generateBagItems(items[i], sizes[j], 50, 20);
 			Timer *timerF = new Timer();
 			Timer *timerG = new Timer();
@@ -191,14 +193,16 @@ void testKnapsack() {
 
 void testTsp() {
 	using namespace std;
-	int cities[] = { 10, 20, 30};
-	int times[] = { 100, 100, 100 };
+	int cities[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+	int times[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	int citiesLength = 13;
+
 	fstream fileF("tspFull.txt", ios_base::app);
 	fstream fileG("tspGreedy.txt", ios_base::app);
 	fstream fileD("tspDynamic.txt", ios_base::app);
 	TspProblem *tsp = new TspProblem();
 	CityGraph *graph = NULL;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < citiesLength; i++) {
 		tsp->generateCityGraph(cities[i], 50);
 		Timer *timerF = new Timer();
 		Timer *timerG = new Timer();
