@@ -7,6 +7,8 @@ private:
 	LARGE_INTEGER performanceCountEnd;
 	LARGE_INTEGER cumulativeSum;
 	int count;
+	double freq;
+	void setFreq();
 public:
 	Timer(void);
 	~Timer(void);
